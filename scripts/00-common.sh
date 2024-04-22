@@ -8,8 +8,6 @@ fi
 
 ROOT_DIR="$(realpath "$(dirname "$0")/../")"
 ROOT_DIR="${ROOT_DIR%/}"
-BUILD_DIR="$(realpath "$1")"
-BUILD_DIR="${BUILD_DIR%/}/_x_build"
 
 NPROC="$(nproc)"
 NLOAD=$(( NPROC - 1 ))
@@ -49,4 +47,16 @@ append_portage_env() {
 	else
 		_do echo "${line}" >>"$file"
 	fi
+}
+
+fetch() {
+	local url="$2" file="$1" ret=1 tries=3
+	while (( ret != 0 && tries > 0 )); do
+		set +e
+		_do curl --retry 5 --connect-timeout 20 -o "$file" -Lf "$url"
+		ret=$?
+		set -e
+		tries=$((tries - 1))
+	done
+	return $ret
 }
