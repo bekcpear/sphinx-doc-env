@@ -15,12 +15,12 @@ RUN _x_scripts/01-prepare.sh "$(pwd)"
 ADD scripts/02-install.sh _x_scripts/02-install.sh
 RUN _x_scripts/02-install.sh "$(pwd)"
 
-#ADD configures_post/ _x_configures_post/
-#ADD scripts/03-sphinx-env.sh _x_scripts/03-sphinx-env.sh
-#RUN _x_scripts/03-sphinx-env.sh "$(pwd)"
+ADD configures_post/ _x_configures_post/
+ADD scripts/03-sphinx-env.sh _x_scripts/03-sphinx-env.sh
+RUN _x_scripts/03-sphinx-env.sh "$(pwd)"
 
-#ADD scripts/04-post.sh _x_scripts/04-post.sh
-#RUN _x_scripts/04-post.sh "$(pwd)"
+ADD scripts/04-post.sh _x_scripts/04-post.sh
+RUN _x_scripts/04-post.sh "$(pwd)"
 
 ENV TERM="xterm-256color"
 WORKDIR /root
