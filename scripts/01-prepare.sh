@@ -49,8 +49,9 @@ recv_gpg_key() {
 			sleep 30
 		fi
 		_do gpg --keyserver "$server" --recv-keys "$key" && ret=0 || ret=$?
-		(( tries++ ))
+		(( tries++ )) || true
 	done
+	return $ret
 }
 
 ##
