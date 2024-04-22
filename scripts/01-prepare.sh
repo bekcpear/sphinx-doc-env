@@ -41,10 +41,21 @@ _do gpg-connect-agent 'RELOADAGENT' '/bye'
 _do gpg --version
 _do gpg-agent --version
 
+recv_gpg_key() {
+	local server="$1" key="$2" tries=0 ret=1
+	while (( ret != 0 )) && (( tries < 5 )); do
+		if (( tries > 0 )); then
+			echo "receive gpg key failed, try again after 30 sec ..." >&2
+			sleep 30
+		fi
+		_do gpg --keyserver "$server" --recv-keys "$key" && ret=0 || ret=$?
+		(( tries++ ))
+	done
+}
+
 ##
 # prepare pub keys
-_do gpg --keyserver hkps://keys.gentoo.org \
-	--recv-keys EF9538C9E8E64311A52CDEDFA13D0EF1914E7A72
+recv_gpg_key "hkps://keys.gentoo.org" "EF9538C9E8E64311A52CDEDFA13D0EF1914E7A72"
 _do gpg --import ./1E100000FA95E6B5.pub
 
 shallow_clone() {
