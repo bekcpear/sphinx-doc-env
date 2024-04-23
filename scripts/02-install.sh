@@ -7,9 +7,9 @@ source "$(dirname "$0")/00-common.sh"
 trap '
 _do rm -rf /tmp/*
 _do rm -rf /var/log/emerge*
-_do rm -rf /var/tmp/portage/*
-_do rm -rf /var/cache/distfiles/*
-_do rm -rf /var/cache/binpkgs/*
+_do rm -rf /var/tmp/portage/
+_do rm -rf /var/cache/distfiles/
+_do rm -rf /var/cache/binpkgs/
 _do rm -rf /var/db/repos/gentoo
 _do rm -rf /var/db/repos/ryans
 ' EXIT
@@ -124,11 +124,15 @@ _do_emerge() {
 		--autounmask-continue=y \
 		--autounmask-keep-keywords=n \
 		--autounmask-keep-mask=y \
+		--quiet-fail=n \
 		"$@"
 }
-# emerge dev-texlive/texlive-latexextra first due to sometime it's not installed before dev-texlive/texlive-xetex
-# BUG: https://bugs.gentoo.org/928116
-_do_emerge dev-texlive/texlive-latexextra
+# emerge dev-texlive/texlive-latexextra first due to sometime it's not installed before dev-texlive/texlive-xetex,
+# see also BUG: https://bugs.gentoo.org/928116
+# emerge dev-texlive/texlive-langenglish first due to BUG: https://bugs.gentoo.org/930467
+_do_emerge \
+	dev-texlive/texlive-latexextra \
+	dev-texlive/texlive-langenglish
 _do_emerge \
 	app-arch/unzip \
 	app-editors/vim \
