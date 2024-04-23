@@ -127,12 +127,11 @@ _do_emerge() {
 		--quiet-fail=n \
 		"$@"
 }
+# emerge dev-texlive/texlive-langenglish first due to BUG: https://bugs.gentoo.org/930467
+_do_emerge -1 dev-texlive/texlive-langenglish
 # emerge dev-texlive/texlive-latexextra first due to sometime it's not installed before dev-texlive/texlive-xetex,
 # see also BUG: https://bugs.gentoo.org/928116
-# emerge dev-texlive/texlive-langenglish first due to BUG: https://bugs.gentoo.org/930467
-_do_emerge \
-	dev-texlive/texlive-latexextra \
-	dev-texlive/texlive-langenglish
+_do_emerge -1 dev-texlive/texlive-latexextra
 _do_emerge \
 	app-arch/unzip \
 	app-editors/vim \
