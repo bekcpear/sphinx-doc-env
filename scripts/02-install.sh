@@ -31,6 +31,9 @@ append_portage_env "app-text/texlive-core cjk xetex" \
 	package.use texlive
 append_portage_env "media-libs/harfbuzz icu" \
 	package.use texlive
+append_portage_env "app-editors/vim minimal
+app-editors/vim-core minimal" \
+	package.use vim
 
 ##
 # configure keyword for ::ryans repo
@@ -97,16 +100,38 @@ media-libs/harfbuzz::gentoo
 " package.accept_keywords texlive
 
 ##
+# prepare locale
+_do echo "
+C.UTF8 UTF-8
+zh_CN.UTF-8 UTF-8
+en_US.UTF-8 UTF-8
+" >> /etc/locale.gen
+_do locale-gen
+_do eselect locale set en_US.utf8
+_do env-update
+. /etc/profile
+
+##
 # install packages
 _do mkdir -p /run/lock
-_do emerge -ntvj -l$NLOAD $BINPKG_OPTS \
-	--autounmask=y \
-	--autounmask-use=y \
-	--autounmask-license=y \
-	--autounmask-write=y \
-	--autounmask-continue=y \
-	--autounmask-keep-keywords=n \
-	--autounmask-keep-mask=y \
+_do_emerge() {
+	_do emerge -ntvj -l$NLOAD $BINPKG_OPTS \
+		--noreplace \
+		--autounmask=y \
+		--autounmask-use=y \
+		--autounmask-license=y \
+		--autounmask-write=y \
+		--autounmask-continue=y \
+		--autounmask-keep-keywords=n \
+		--autounmask-keep-mask=y \
+		"$@"
+}
+# emerge dev-texlive/texlive-latexextra first due to sometime it's not installed before dev-texlive/texlive-xetex
+# BUG: https://bugs.gentoo.org/928116
+_do_emerge dev-texlive/texlive-latexextra
+_do_emerge \
+	app-arch/unzip \
+	app-editors/vim \
 	app-shells/zsh::gentoo \
 	app-text/texlive::gentoo \
 	dev-python/jieba::ryans \
