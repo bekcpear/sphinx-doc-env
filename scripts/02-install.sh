@@ -128,7 +128,11 @@ _do_emerge() {
 		"$@"
 }
 # emerge dev-texlive/texlive-langenglish first due to BUG: https://bugs.gentoo.org/930467
-_do_emerge -1 dev-texlive/texlive-langenglish
+# dev-texlive/texlive-langchinese dev-texlive/texlive-langcjk probably?
+_do_emerge -1 \
+	dev-texlive/texlive-langchinese \
+	dev-texlive/texlive-langcjk \
+	dev-texlive/texlive-langenglish
 # emerge dev-texlive/texlive-latexextra first due to sometime it's not installed before dev-texlive/texlive-xetex,
 # see also BUG: https://bugs.gentoo.org/928116
 _do_emerge -1 dev-texlive/texlive-latexextra
