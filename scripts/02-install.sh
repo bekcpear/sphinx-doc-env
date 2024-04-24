@@ -143,7 +143,8 @@ _do_emerge \
 	app-text/texlive::gentoo \
 	dev-python/jieba::ryans \
 	dev-python/sphinx::gentoo \
-	dev-python/furo::gentoo
+	dev-python/furo::gentoo \
+	dev-vcs/git::gentoo
 
 ##
 # clean bdeps
